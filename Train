@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Train Reservation</title>
+</head>
+
+<body>
+
+<h1>Train Reservation System</h1>
+
+<!-- Login -->
+<h2>Login</h2>
+
+<input type="text" id="user" placeholder="Username">
+<input type="password" id="pass" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<p id="loginResult"></p>
+
+<hr>
+
+<!-- Train Details -->
+<h2>Available Trains</h2>
+
+<table border="1">
+    <tr>
+        <th>Train</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Seats</th>
+        <th>Action</th>
+    </tr>
+
+    <tr>
+        <td>Chennai Express</td>
+        <td>Chennai</td>
+        <td>Bangalore</td>
+        <td id="train1">10</td>
+        <td>
+            <button onclick="selectTrain('train1')">Book</button>
+        </td>
+    </tr>
+
+    <tr>
+        <td>Coimbatore Express</td>
+        <td>Chennai</td>
+        <td>Coimbatore</td>
+        <td id="train2">8</td>
+        <td>
+            <button onclick="selectTrain('train2')">Book</button>
+        </td>
+    </tr>
+</table>
+
+<hr>
+
+<!-- Passenger Details -->
+<h2>Passenger Details</h2>
+
+<input type="text" id="name" placeholder="Passenger Name">
+<input type="date" id="date">
+
+<button onclick="bookTicket()">Book Ticket</button>
+
+<p id="bookingResult"></p>
+
+<hr>
+
+<!-- PNR -->
+<h2>PNR Status</h2>
+
+<input type="text" id="pnr" placeholder="Enter PNR">
+<button onclick="checkPNR()">Check</button>
+
+<p id="pnrResult"></p>
+
+<hr>
+
+<!-- Cancel -->
+<h2>Cancel Ticket</h2>
+
+<button onclick="cancelTicket()">Cancel Ticket</button>
+
+<p id="cancelResult"></p>
+
+
+<script>
+
+let selectedTrain = "";
+let bookedTrain = "";
+let pnrNumber = "";
+
+// Login
+function login() {
+
+    let user = document.getElementById("user").value;
+    let pass = document.getElementById("pass").value;
+
+    if (user == "user" && pass == "1234") {
+        document.getElementById("loginResult").innerHTML =
+        "Login Successful";
+    }
+    else {
+        document.getElementById("loginResult").innerHTML =
+        "Invalid Login";
+    }
+}
+
+
+// Select train
+function selectTrain(train) {
+
+    selectedTrain = train;
+
+    alert("Train selected");
+
+}
+
+
+// Book ticket
+function bookTicket() {
+
+    let name = document.getElementById("name").value;
+    let date = document.getElementById("date").value;
+
+    if (name == "" || date == "" || selectedTrain == "") {
+        alert("Enter all details");
+        return;
+    }
+
+    let seats = document.getElementById(selectedTrain);
+
+    if (seats.innerHTML > 0) {
+
+        seats.innerHTML--;
+
+        bookedTrain = selectedTrain;
+
+        pnrNumber = Math.floor(10000 + Math.random() * 90000);
+
+        document.getElementById("bookingResult").innerHTML =
+        "Ticket Booked!<br>Passenger: " + name +
+        "<br>PNR: " + pnrNumber;
+
+    }
+    else {
+        alert("No seats available");
+    }
+}
+
+
+// Check PNR
+function checkPNR() {
+
+    let pnr = document.getElementById("pnr").value;
+
+    if (pnr == pnrNumber) {
+        document.getElementById("pnrResult").innerHTML =
+        "Status: CONFIRMED";
+    }
+    else {
+        document.getElementById("pnrResult").innerHTML =
+        "PNR not found";
+    }
+}
+
+
+// Cancel ticket
+function cancelTicket() {
+
+    if (bookedTrain == "") {
+        alert("No ticket booked");
+        return;
+    }
+
+    let seats = document.getElementById(bookedTrain);
+
+    seats.innerHTML++;
+
+    document.getElementById("cancelResult").innerHTML =
+    "Ticket cancelled. Refund will be processed.";
+
+    bookedTrain = "";
+    pnrNumber = "";
+}
+
+</script>
+
+</body>
+</html>
